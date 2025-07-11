@@ -53,27 +53,31 @@ elif modo == "Convierte audio en texto":
         st.audio(audio_file, format="audio/mp3")
 
         file_size_mb = len(audio_file.getvalue()) / (1024 * 1024)
-        #st.markdown(f"📦 Tamaño del archivo: **{file_size_mb:.1f} MB**")
-        #st.markdown(f"⏱️ Tiempo estimado de transcripción: **{int(file_size_mb)} minuto(s)**")
+        st.markdown(f"📦 Tamaño del archivo: **{file_size_mb:.1f} MB**")
+        st.markdown(f"⏱️ Tiempo estimado de transcripción: **{int(file_size_mb)} minuto(s)**")
 
         if file_size_mb > 200:
-            st.error("❌ El archivo excede el límite permitido (200 MB). Reduce el tamaño.")
+        st.error("❌ El archivo excede el límite permitido (200 MB). Reduce el tamaño.")
         else:
-            if st.button("📝 Convertir a texto"):
+            if st.button("▶️ Convertir a texto"):
+                # 👉 Cargar modelo solo al convertir
+                with st.spinner("🔄 Cargando modelo..."):
+                    modelo = cargar_modelo()
+    
                 with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tmp:
                     tmp.write(audio_file.read())
                     tmp_path = tmp.name
-
-                with st.spinner("🔄 Transcribiendo..."):
+    
+                with st.spinner("🧠 Transcribiendo..."):
                     resultado = modelo.transcribe(tmp_path)
                     texto = resultado["text"]
-
+    
                 st.success("✅ Transcripción completada")
-                st.text_area("Texto transcrito", texto, height=300)
-                st.download_button("⬇️ Descargar texto", texto, file_name="transcripcion.txt", mime="text/plain")
-
-                os.remove(tmp_path)
-
+                st.text_area("📝 Texto transcrito:", texto, height=300)
+                st.download_button("💾 Descargar texto", texto, file_name="transcripcion.txt", mime="text/plain")
+    
+                os.remove(tmp_path)             
+     
 # -------------------------
 # OPCIÓN 2: GRABAR CON MICRÓFONO
 # -------------------------
