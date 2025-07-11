@@ -5,13 +5,6 @@ import tempfile
 import time
 import os
 
-if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 8501))
-    st.run(port=port)
-
-
-
-
 # -------------------------
 # TÍTULO Y ENCABEZADO
 # -------------------------
