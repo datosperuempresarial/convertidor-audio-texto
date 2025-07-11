@@ -5,7 +5,8 @@ import tempfile
 import time
 import os
 
-model = whisper.load_model("base")
+model = whisper.load_model("tiny")
+
 
 # -------------------------
 # TÍTULO Y ENCABEZADO
